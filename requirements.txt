@@ -1,0 +1,9 @@
+torch==2.1.2
+pytorch-lightning==2.1.2
+transformers==4.36.1
+timm==0.9.12
+pytest==7.4.3
+numpy==1.26.2
+matplotlib==3.8.2
+pandas==2.2.1
+Pillow==10.1.0
