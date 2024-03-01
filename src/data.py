@@ -32,7 +32,7 @@ class CustomDataset(Dataset):
             img = self.transform(img)
         
         tokenized_captions = self.tokenizer(caption, padding='max_length', truncation=True, max_length=self.max_length).input_ids                            
-        #tokenized_captions = [caption if caption != self.tokenizer.pad_token_id else -100 for caption in tokenized_captions] # Why does padding-token-id change to -100?
+        #tokenized_captions = [caption if caption != self.tokenizer.pad_token_id else -100 for caption in tokenized_captions]
 
         return img, torch.tensor(tokenized_captions), caption
 

@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-class ProjectionHead(nn.Module):
+class ProjectionHead2(nn.Module):
     def __init__(self, embedding_dim: int, projection_dim: int, dropout: float) -> None:
         super().__init__()
 
@@ -23,7 +23,7 @@ class ProjectionHead(nn.Module):
 
         return self.layer_norm(x)
 
-class ProjectionHead2(nn.Module):
+class ProjectionHead(nn.Module):
     def __init__(self, embedding_dim: int, projection_dim: int, dropout: float) -> None:
         super().__init__()
 
