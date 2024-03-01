@@ -5,9 +5,8 @@ This repository contains the code for Image2Emoji, a Zero-shot Emoji Prediction 
 ## 📎 Model
 OpenAI's CLIP (Contrastive Language-Image Pretraining) model can embed different types of data into a common feature space by learning to predict which images correspond to which text descriptions.
 I opted for lightweight models for each encoder (Pretrained ResNet18 for the image encoder and Pretrained ALBERT for the text encoder), aiming to deploy as a web application.
-![clip1](pictures/clip1.png)  
 After fine-tuning the model on the Flickr-8k dataset, the model is able to predict the most similar emoji for a given image.
-![clip2](pictures/clip2.png)
+![clip](pictures/clip.png)
 
 ## 📦 Installation
 To install the required packages, run the following command:
