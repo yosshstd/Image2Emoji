@@ -164,6 +164,5 @@ cython_debug/
 trash.ipynb
 dataset
 lightning_logs
-Flickr8k/Images
-Flickr8k/captions.txt
-model_weights
+Flickr8k
+Flickr30k

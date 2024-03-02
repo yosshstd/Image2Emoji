@@ -6,23 +6,19 @@ class ProjectionHead(nn.Module):
     def __init__(self, embedding_dim: int, projection_dim: int, dropout: float) -> None:
         super().__init__()
 
-        self.layer_norm1 = nn.LayerNorm(embedding_dim)
-        self.linear1 = nn.Linear(embedding_dim, projection_dim*2)
-        self.geglu = GEGLU()
-        self.dropout = nn.Dropout(dropout)
+        self.linear1 = nn.Linear(embedding_dim, projection_dim)
+        self.gelu = nn.GELU()
         self.linear2 = nn.Linear(projection_dim, projection_dim)
-        self.layer_norm2 = nn.LayerNorm(projection_dim)
+
+        self.dropout = nn.Dropout(dropout)
+        self.layer_norm = nn.LayerNorm(projection_dim)
 
     def forward(self, x):
-        x = self.layer_norm1(x)
-        x = self.linear1(x)
-        x = self.geglu(x)
-        x = self.dropout(x)
+        residual = self.linear1(x)
+        x = self.gelu(residual)
         x = self.linear2(x)
-        return self.layer_norm2(x)
+        x = self.dropout(x)
 
+        x += residual
 
-class GEGLU(nn.Module):
-    def forward(self, x):
-        x, gates = x.chunk(2, dim = -1)
-        return x * F.gelu(gates)
+        return self.layer_norm(x)

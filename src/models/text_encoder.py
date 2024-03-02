@@ -18,4 +18,4 @@ class TextEncoder(nn.Module):
         output = self.model(input_ids=input_ids)
         last_hidden_state = output.last_hidden_state
 
-        return last_hidden_state[:, self.target_token_idx, :]
+        return last_hidden_state[:, self.target_token_idx, :] # last layer, cls token
