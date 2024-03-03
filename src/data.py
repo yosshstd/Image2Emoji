@@ -21,7 +21,6 @@ class CustomDataset(Dataset):
         return len(self.df)
 
     def __getitem__(self, idx):
-        #train_df, val_df = train_test_split(self.df, test_size=0.2)
 
         caption = self.df.caption.iloc[idx]
         image = self.df.image.iloc[idx]
@@ -32,21 +31,38 @@ class CustomDataset(Dataset):
             img = self.transform(img)
         
         tokenized_captions = self.tokenizer(caption, padding='max_length', truncation=True, max_length=self.max_length).input_ids                            
-        #tokenized_captions = [caption if caption != self.tokenizer.pad_token_id else -100 for caption in tokenized_captions]
 
         return img, torch.tensor(tokenized_captions), caption
 
-def get_dataloaders(data_dir, tokenizer_name, batch_size=2, num_workers=4):
-    transform = transforms.Compose([
+def get_dataloaders(data_dir, tokenizer_name, batch_size=16, num_workers=2):
+    train_transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=0.5, std=0.5),
+        transforms.RandomApply([
+            transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(degrees=10),
+            ], p=0.5)
+        ])
+    val_transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize(mean=0.5, std=0.5)
-    ])
+        ])
 
-    dataset = CustomDataset(data_dir, tokenizer_name, transform=transform)
-    train_size = int(0.8*len(dataset))  # 80% train, 20% val
-    val_size = len(dataset) - train_size
-    train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+    train_dataset = CustomDataset(data_dir, tokenizer_name, transform=train_transform)
+    val_dataset = CustomDataset(data_dir, tokenizer_name, transform=val_transform)
+    indices = torch.randperm(len(train_dataset)).tolist()
+    train_size = int(0.8*len(train_dataset))  # 80% train, 20% val
+    # print(f"Train size: {train_size}, Val size: {len(train_dataset)-train_size}")
+    train_dataset = torch.utils.data.Subset(train_dataset, indices[:train_size])
+    val_dataset = torch.utils.data.Subset(val_dataset, indices[train_size:])
+
+    # dataset = CustomDataset(data_dir, tokenizer_name, transform=val_transform)
+    # train_size = int(0.8*len(dataset))  # 80% train, 20% val
+    # val_size = len(dataset) - train_size
+    # train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
