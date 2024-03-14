@@ -1,6 +1,6 @@
 # Image2Emoji
 
-This repository contains the code for Image2Emoji, a Zero-shot Emoji Prediction model. The model is based on OpenAI's CLIP model and is trained on [Flickr-8k Dataset](https://www.kaggle.com/datasets/adityajn105/flickr8k). The model is able to predict the most relevant emoji for a given image.
+This repository contains the code for Image2Emoji, a Zero-shot Emoji Prediction model. ~~The model is based on OpenAI's CLIP model and is trained on [Flickr-8k Dataset](https://www.kaggle.com/datasets/adityajn105/flickr8k).~~ The model is [TinyCLIP](wkcn/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M). The model is able to predict the most relevant emoji for a given image.
 
 ## 📎 Model
 OpenAI's CLIP (Contrastive Language-Image Pretraining) model can embed different types of data into a common feature space by learning to predict which images correspond to which text descriptions.
