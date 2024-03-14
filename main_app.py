@@ -21,10 +21,10 @@ def main():
     # Load the model cached
     @st.cache_resource
     def load_model():
-        processor = CLIPImageProcessor.from_pretrained("wkcn/TinyCLIP-ViT-39M-16-Text-19M-YFCC15M")
-        tokenizer = AutoTokenizer.from_pretrained("wkcn/TinyCLIP-ViT-39M-16-Text-19M-YFCC15M")
-        vision_model = CLIPVisionModelWithProjection.from_pretrained("wkcn/TinyCLIP-ViT-39M-16-Text-19M-YFCC15M")
-        text_model = CLIPTextModelWithProjection.from_pretrained("wkcn/TinyCLIP-ViT-39M-16-Text-19M-YFCC15M")
+        processor = CLIPImageProcessor.from_pretrained(const.MODEL)
+        tokenizer = AutoTokenizer.from_pretrained(const.MODEL)
+        vision_model = CLIPVisionModelWithProjection.from_pretrained(const.MODEL)
+        text_model = CLIPTextModelWithProjection.from_pretrained(const.MODEL)
 
         return processor, tokenizer, vision_model, text_model
     processor, tokenizer, vision_model, text_model = load_model()
@@ -64,7 +64,6 @@ def main():
 
 
     if image_data is not None:
-        # Perform OCR
         with st.spinner('Loading...'):
             start_time = time.time()
             st.image(image_data, caption='Uploaded image', use_column_width=True)
@@ -77,9 +76,9 @@ def main():
     else:
         image_embeddings = np.zeros((1, 512))
 
-    col1, col2 = st.columns([1, 1])
-    pos_prompt = col1.expander('Positive Prompt').text_area(label='', help='Input a positive prompt for the image.', height=50)
-    neg_prompt = col2.expander('Negative Prompt').text_area(label='', help='Input a negative prompt for the image.', height=50)
+    col1, col2, col3 = st.columns([1, 1, 1])
+    pos_prompt = col1.expander('Positive Prompt').text_area(label='', help='Input a positive prompt for the image (optional).', height=50)
+    neg_prompt = col2.expander('Negative Prompt').text_area(label='', help='Input a negative prompt for the image (optional).', height=50)
 
 
     if pos_prompt is not None:
@@ -94,9 +93,9 @@ def main():
     else:
         neg_prompt_embeddings = None
 
-    # 加算
-    cfg = 0.2
-    image_embeddings = (1-cfg)*image_embeddings + cfg*(pos_prompt_embeddings - neg_prompt_embeddings)
+    # Calculate the similarity
+    ratio = col3.slider('Prompt Ratio', min_value=0.0, max_value=1.0, value=0.2, step=0.1, help='The ratio of positive prompt to negative prompt (optional).')
+    image_embeddings = (1-ratio)*image_embeddings + ratio*(pos_prompt_embeddings - neg_prompt_embeddings)
     sim = np.dot(image_embeddings, text_embeddings.T) / (norm(image_embeddings) * norm(text_embeddings, axis=1))
 
     # Get the top 5 emojis
@@ -106,9 +105,7 @@ def main():
     top5_sim = sim[0][top5_idx]
     
     # Display the result
-    st.subheader('Top 5 emojis')
-
-    # if top5_sim[0]がnanじゃないとき
+    st.subheader('Top 5 Emojis')
     if not np.isnan(top5_sim[0]):
         for i in range(5):
             st.write(f'{top5_sim[i]:.3f} : {top5_emoji[i]} ({top5_text[i]})')
@@ -117,7 +114,7 @@ def main():
     st.markdown('<hr>', unsafe_allow_html=True)
     st.markdown('<h2 style="text-align:center;">Image2Emoji App</h2>', unsafe_allow_html=True)
     st.markdown(
-        '<div style="text-align:center;font-size:12px;opacity:0.7;">This is a demo app of <a href="https://huggingface.co/wkcn/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M" target="_blank">TinyCLIP</a><br>'
+        '<div style="text-align:center;font-size:12px;opacity:0.7;">This is a demo app of <a href="https://arxiv.org/abs/2309.12314" target="_blank">TinyCLIP</a><br>'
         '(©️ 2023 <a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank"> Microsoft Corporation.</a>｜<a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank">MIT License</a>).<br></div>',
         unsafe_allow_html=True
     )

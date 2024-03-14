@@ -5,6 +5,8 @@ SET_PAGE_CONFIG = {
     'initial_sidebar_state': 'collapsed',
 }
 
+MODEL = 'wkcn/TinyCLIP-ViT-39M-16-Text-19M-YFCC15M'
+
 URL = 'http://images.cocodataset.org/val2017/000000039769.jpg'
 
 HIDE_ST_STYLE = '''
