@@ -7,7 +7,7 @@ SET_PAGE_CONFIG = {
 
 MODEL = 'wkcn/TinyCLIP-ViT-39M-16-Text-19M-YFCC15M'
 
-URL = 'http://images.cocodataset.org/val2017/000000039769.jpg'
+URL = 'https://picsum.photos/600/400'
 
 HIDE_ST_STYLE = '''
                 <style>
