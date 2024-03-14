@@ -71,7 +71,9 @@ def main():
             outputs = vision_model(**inputs)
             image_embeddings = outputs.image_embeds.detach().cpu().numpy() 
 
-            st.success(f'Elapsed time: {time.time()-start_time:.2f} [sec]')
+            col1, col2 = st.columns([1, 5])
+            col1.button('Reload', help='Reload all process.')
+            col2.success(f'Elapsed time: {time.time()-start_time:.2f} [sec]')
 
     else:
         image_embeddings = np.zeros((1, 512))
@@ -80,7 +82,7 @@ def main():
     pos_prompt = col1.expander('Positive Prompt').text_area(label='', help='Input a positive prompt for the image (optional).', height=50)
     neg_prompt = col2.expander('Negative Prompt').text_area(label='', help='Input a negative prompt for the image (optional).', height=50)
 
-
+    #button('Reload', help='Reload the output of the model.')
     if pos_prompt is not None:
         inputs = tokenizer([pos_prompt], return_tensors='pt', padding=True)
         pos_prompt_embeddings = text_model(**inputs).text_embeds.detach().cpu().numpy()
