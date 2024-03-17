@@ -117,7 +117,7 @@ def main():
     st.markdown('<h2 style="text-align:center;">Image2Emoji App</h2>', unsafe_allow_html=True)
     st.markdown(
         '<div style="text-align:center;font-size:12px;opacity:0.7;">This app is powered by <a href="https://arxiv.org/abs/2309.12314" target="_blank">TinyCLIP</a><br>'
-        '(©️ 2023 <a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank"> Microsoft Corporation.</a>｜<a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank">MIT License</a>).<br></div>',
+        '(©️ 2023 <a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank"> Microsoft Corporation</a>｜<a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank">MIT License</a>)<br></div>',
         unsafe_allow_html=True
     )
     st.markdown('<br>', unsafe_allow_html=True)

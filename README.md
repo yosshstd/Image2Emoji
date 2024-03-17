@@ -1,3 +1,5 @@
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://image2emoji.streamlit.app/)
+
 # Image2Emoji
 
 This repository contains the code for Image2Emoji, a Zero-shot Emoji Prediction model. ~~The model is based on OpenAI's CLIP model and is trained on [Flickr-8k Dataset](https://www.kaggle.com/datasets/adityajn105/flickr8k).~~ The model is [TinyCLIP](wkcn/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M). The model is able to predict the most relevant emoji for a given image.
