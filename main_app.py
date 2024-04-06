@@ -10,11 +10,13 @@ import pandas as pd
 import requests
 from numpy.linalg import norm
 from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection, CLIPTextModelWithProjection, AutoTokenizer
-from streamlit_paste_button import paste_image_button as pbutton
+from st_img_pastebutton import paste
+from io import BytesIO
+import base64
 
 
 
-def main():
+def main(): 
     ''''''
     st.markdown(f'<h1 style="text-align:center;">Image2Emoji App</h1>', unsafe_allow_html=True)
 
@@ -48,9 +50,11 @@ def main():
         except:
             image_data = None
     elif img_source == 'Paste':
-        out = pbutton('Paste an image').image_data
+        pasted_img = paste(key='image_clipboard', label='Paste an image from clipboard')
         try:
-            image_data = out.convert("RGB")
+            header, encoded = pasted_img.split(",", 1)
+            binary_data = base64.b64decode(encoded)
+            image_data = Image.open(BytesIO(binary_data)).convert('RGB')
         except:
             image_data = None
     elif img_source == 'Upload':
@@ -116,8 +120,7 @@ def main():
     st.markdown('<hr>', unsafe_allow_html=True)
     st.markdown('<h2 style="text-align:center;">Image2Emoji App</h2>', unsafe_allow_html=True)
     st.markdown(
-        '<div style="text-align:center;font-size:12px;opacity:0.7;">This app is powered by <a href="https://arxiv.org/abs/2309.12314" target="_blank">TinyCLIP</a><br>'
-        '(©️ 2023 <a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank"> Microsoft Corporation</a>｜<a href="https://github.com/microsoft/Cream/blob/main/TinyCLIP/LICENSE" target="_blank">MIT License</a>)<br></div>',
+        '<div style="text-align:center;font-size:12px;opacity:0.7;">Source code is <a href="https://github.com/yosshstd/Image2Emoji" target="_blank">here</a></div>',
         unsafe_allow_html=True
     )
     st.markdown('<br>', unsafe_allow_html=True)

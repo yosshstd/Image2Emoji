@@ -163,6 +163,7 @@ cython_debug/
 # My things
 trash.ipynb
 trash2.ipynb
+trash3.ipynb
 lightning_logs
 Flickr8k
 Flickr30k
