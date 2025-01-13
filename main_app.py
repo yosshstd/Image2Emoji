@@ -70,7 +70,7 @@ def main():
     if image_data is not None:
         with st.spinner('Loading...'):
             start_time = time.time()
-            st.image(image_data, caption='Uploaded image', use_column_width=True)
+            st.image(image_data, caption='Uploaded image', use_container_width=True)
             inputs = processor(image_data, return_tensors='pt')
             outputs = vision_model(**inputs)
             image_embeddings = outputs.image_embeds.detach().cpu().numpy() 
