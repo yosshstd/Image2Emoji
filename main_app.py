@@ -14,6 +14,8 @@ from st_img_pastebutton import paste
 from io import BytesIO
 import base64
 
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="streamlit")
 
 
 def main(): 
