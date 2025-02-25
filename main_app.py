@@ -70,7 +70,7 @@ def main():
     if image_data is not None:
         with st.spinner('Loading...'):
             start_time = time.time()
-            st.image(image_data, caption='Uploaded image', use_container_width=True)
+            st.image(image_data, caption='Uploaded image', use_column_width=True)
             inputs = processor(image_data, return_tensors='pt')
             outputs = vision_model(**inputs)
             image_embeddings = outputs.image_embeds.detach().cpu().numpy() 
@@ -83,8 +83,8 @@ def main():
         image_embeddings = np.zeros((1, 512))
 
     col1, col2, col3 = st.columns([1, 1, 1])
-    pos_prompt = col1.expander('Positive Prompt').text_area(label='', help='Input a positive prompt for the image (optional).', height=50)
-    neg_prompt = col2.expander('Negative Prompt').text_area(label='', help='Input a negative prompt for the image (optional).', height=50)
+    pos_prompt = col1.expander('Positive Prompt').text_area(label='', help='Input a positive prompt for the image (optional).')
+    neg_prompt = col2.expander('Negative Prompt').text_area(label='', help='Input a negative prompt for the image (optional).')
 
     #button('Reload', help='Reload the output of the model.')
     if pos_prompt is not None:
